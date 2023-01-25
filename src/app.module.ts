@@ -11,9 +11,10 @@ import { Database } from './database';
 import { Currency } from './currency';
 import { CurrencyGatewayModule } from './currency/getway/currency.gateway.module';
 import { ScheduleModule } from '@nestjs/schedule';
+import { ConfigModule } from '@nestjs/config';
 
 @Module({
-  imports: [MongooseModule.forRoot('mongodb+srv://angular:gUt52CBEhmhvGnN2@cluster0.gc26hgh.mongodb.net/?retryWrites=true&w=majority'), 
+  imports: [ConfigModule.forRoot(), MongooseModule.forRoot(process.env.MongoDB_URL), 
   CurrencyRatesModule, 
   CurrencyModule, 
   DatabaseModule,
