@@ -5,17 +5,17 @@ import { OnModuleInit } from '@nestjs/common';
 import { Cron } from '@nestjs/schedule';
 
 @WebSocketGateway()
-export class CurrencyGateway implements OnModuleInit{
+export class CurrencyGateway implements OnModuleInit {
   @WebSocketServer()
-  server: Server
+  server: Server;
 
-  onModuleInit(){
+  onModuleInit() {
     this.server.on('connection', (socket) => {
       console.log(socket.id);
-    })
+    });
   }
 
-  constructor(private readonly currencyService: CurrencyService) { }
+  constructor(private readonly currencyService: CurrencyService) {}
   // @SubscribeMessage('createCurrency')
   // create(@MessageBody() createCurrencyDto: CreateCurrencyDto) {
   //   return this.currencyService.create(createCurrencyDto);
@@ -23,10 +23,10 @@ export class CurrencyGateway implements OnModuleInit{
 
   @Cron('0 */1 * * * *')
   async handleCron() {
-    const result = await this.currencyService.findRates()
+    const result = await this.currencyService.findRates();
     this.server.emit('onMessage', {
-      "message": "new",
-      data: result
-    })
+      message: 'new rates',
+      data: result,
+    });
   }
 }
